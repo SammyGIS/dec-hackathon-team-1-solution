@@ -6,7 +6,7 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=ny_taxi
+      - POSTGRES_DB=countries_taxi
     volumes:
       - ./rest_countries:/var/lib/postgresql/data:rw
     ports:
@@ -19,3 +19,8 @@ services:
       - PGADMIN_DEFAULT_PASSWORD=root
     ports:
       - "8080:80"
+
+  rightmove_scraper:
+    build:
+      context: .
+      dockerfile: ./Dockerfile

@@ -9,4 +9,4 @@ COPY main.py ./app/main.py
 RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
 
 
-CMD ["echo", "python_script"]
+CMD ["echo", "main.py"]
