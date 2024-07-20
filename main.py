@@ -91,3 +91,52 @@ def create_db_table(cur):
         )
     """)
 
+def insert_data_to_db(df:pd.DataFrame, cur,conn):
+    try:
+        # Iterate over DataFrame rows as (index, Series) pairs
+        for _, row in df.iterrows():
+            cur.execute("""
+                INSERT INTO world_countries (
+                    country_code,
+                    country_name,
+                    independence,
+                    un_members,
+                    start_of_week,
+                    official_country_name,
+                    common_native_name,
+                    currency_code,
+                    currency_name,
+                    currency_symbol,
+                    capital,
+                    region,
+                    sub_region,
+                    languages,
+                    area,
+                    population,
+                    continents
+                ) VALUES (%s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s, %s)
+            """, (
+                row['country_code'],
+                row['country_name'],
+                row['independence'],
+                row['un_members'],
+                row['start_of_week'],
+                row['official_country_name'],
+                row['common_native_name'],
+                row['currency_code'],
+                row['currency_name'],
+                row['currency_symbol'],
+                row['capital'],
+                row['region'],
+                row['sub_region'],
+                row['languages'],
+                row['area'],
+                row['population'],
+                row['continents']
+            ))
+
+        # Commit the transaction
+        cur.conn.commit()
+
+    except Exception as e:
+        print(f"An error occurred: {e}")
