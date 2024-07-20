@@ -50,7 +50,25 @@ def transform_data(data: Any) -> pd.DataFrame:
     
     return df_data
 
-def create_db_table(cur):
+
+def create_db(dbname):
+    # Connect to the default 'postgres' database to create a new one
+    conn = psycopg2.connect(
+        "host=localhost dbname=postgres user=postgres password=1118")
+    try:
+        cur = conn.cursor()
+        # Check if the database already exists
+        cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{dbname}'")
+        if cur.fetchone() is None:
+            cur.execute(f"CREATE DATABASE {dbname}")
+            print(f"Database '{dbname}' created successfully.")
+        else:
+            print(f"Database '{dbname}' already exists.")
+
+    except psycopg2.Error as e:
+        print(f"An error occurred: {e}")
+
+def create_table(cur):
     try:
         cur.execute("""
             DROP TABLE IF EXISTS world_countries;
@@ -136,15 +154,16 @@ def insert_data_to_db(df: pd.DataFrame, cur, conn):
 
 def main():
     restcountries_url = "https://restcountries.com/v3.1/all"
+    dbname = 'countries_db'
     conn = psycopg2.connect(
-        "host=localhost dbname=postgres user=postgres password=1118")
+        f"host=localhost dbname={dbname} user=postgres password=1118")
     cur = conn.cursor()
     data = get_data(url=restcountries_url)
     
     if data != 'Error fetching data':
         transformed_data = transform_data(data)
         print(transformed_data)
-        create_db_table(cur)
+        create_table(cur)
         insert_data_to_db(transformed_data, cur,conn)
     
     cur.close()
