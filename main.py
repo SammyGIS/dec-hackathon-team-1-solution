@@ -65,4 +65,29 @@ def transform_data(data: Any) -> pd.DataFrame:
     df_data = pd.DataFrame(countries)
     
     return df_data
-    return df_data
+
+def create_db_table(cur):
+    cur.execute("""
+        DROP TABLE IF EXISTS world_countries;
+        
+        CREATE TABLE IF NOT EXISTS world_countries (
+            country_code VARCHAR(255) PRIMARY KEY,
+            country_name VARCHAR(255),
+            independence BOOLEAN,
+            un_members BOOLEAN,
+            start_of_week TEXT,
+            official_country_name VARCHAR(255),
+            common_native_name VARCHAR(255),
+            currency_code VARCHAR(10),
+            currency_name VARCHAR(255),
+            currency_symbol VARCHAR(10),
+            capital VARCHAR(255),
+            region VARCHAR(255),
+            sub_region VARCHAR(255),
+            languages TEXT,
+            area FLOAT,
+            population INT,
+            continents VARCHAR(255)
+        )
+    """)
+
