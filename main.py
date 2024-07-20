@@ -6,6 +6,7 @@ import json
 from typing import Any
 
 import pandas as pd
+import psycopg2
 import requests
 
 restcountries_url = "https://restcountries.com/v3.1/all"
@@ -140,3 +141,17 @@ def insert_data_to_db(df:pd.DataFrame, cur,conn):
 
     except Exception as e:
         print(f"An error occurred: {e}")
+
+def main():
+  conn = psycopg2.connect(
+            "host=localhost dbname=world_countries user=postgres password=postgres")
+  cur = conn.cursor()
+  data = get_data(url=restcountries_url)
+  transformed_data = transformed_data(data)
+  create_db_table(conn,cur)
+  insert_data_to_db( transformed_data,conn,cur)
+  pass
+
+
+if __name__ == '__main__':
+  main()
