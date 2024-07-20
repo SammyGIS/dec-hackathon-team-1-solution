@@ -24,7 +24,7 @@ This project involves extracting country data from a public REST API, transformi
 - Continents
 
 ## Architecture Diagram
-![alt text](project architecture.png)
+![alt text](project_architecture.png)
 
 ## Analytical Questions
 1. How many countries speak French?
