@@ -155,6 +155,7 @@ def insert_data_to_db(df: pd.DataFrame, cur, conn):
 def main():
     restcountries_url = "https://restcountries.com/v3.1/all"
     dbname = 'countries_db'
+    create_db(dbname=dbname)
     conn = psycopg2.connect(
         f"host=localhost dbname={dbname} user=postgres password=1118")
     cur = conn.cursor()
