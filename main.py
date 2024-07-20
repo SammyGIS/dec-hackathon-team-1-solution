@@ -2,12 +2,16 @@
 # Authors:
 # Date:
 #************************************************************************
+import json
+from typing import Any
+
+import pandas as pd
 import requests
 
 restcountries_url = "https://restcountries.com/v3.1/all"
 
 
-def get_data(url: str) -> dict:
+def get_data(url: str) -> json:
     # Send a GET request to the specified URL
     request = requests.get(url)
     
@@ -22,3 +26,43 @@ def get_data(url: str) -> dict:
         return 'Error fetching data'
 
 
+def transform_data(data: Any) -> pd.DataFrame:
+    # Extract relevant fields from each dictionary in the list
+    countries = {
+        'country_name': [info['name'].get('common') for info in data],
+        'independence': [info.get('independent') for info in data],
+        'un_members': [info.get('unMember') for info in data],
+        'startOfWeek': [info.get('startOfWeek') for info in data],
+        'official_country_name': [info['name'].get('official') for info in data],
+        'common_native_names': [info['name'].get('nativeName', {}).get('eng', {}).get('common') for info in data],
+        
+        # Handle currency details
+        'currency_code': [list(info.get('currencies', {}).keys())[0] if info.get('currencies') else None for info in data],
+        'currency_name': [list(info.get('currencies', {}).values())[0].get('name') if info.get('currencies') else None for info in data],
+        'currency_symbol': [list(info.get('currencies', {}).values())[0].get('symbol') if info.get('currencies') else None for info in data],
+        
+        # get country information
+        'country_code': [info.get('cca3') for info in data],
+        'capital': [info.get('capital', [None])[0] for info in data],
+        'region': [info.get('region') for info in data],
+        'sub_region': [info.get('subregion') for info in data],
+        
+        # Join languages into a single string
+        'languages': [', '.join(info.get('languages', {}).values()) for info in data],
+        
+        # Get land area and population
+        'area': [info.get('area') for info in data],
+        'population': [info.get('population') for info in data],
+        
+        'continents': [info.get('continents', [None])[0] for info in data],   # Extract continent
+        
+        # Handle latlng safely
+        'longitude': [info.get('latlng', [None, None])[1] for info in data],
+        'latitude': [info.get('latlng', [None, None])[0] for info in data]
+    }
+
+    # Convert dictionary to DataFrame
+    df_data = pd.DataFrame(countries)
+    
+    return df_data
+    return df_data
