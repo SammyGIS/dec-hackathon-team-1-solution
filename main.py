@@ -79,7 +79,6 @@ def create_db_table(cur):
             start_of_week TEXT,
             official_country_name VARCHAR(255),
             common_native_name VARCHAR(255),
-            currency_code VARCHAR(10),
             currency_name VARCHAR(255),
             currency_symbol VARCHAR(10),
             capital VARCHAR(255),
@@ -92,7 +91,7 @@ def create_db_table(cur):
         )
     """)
 
-def insert_data_to_db(df:pd.DataFrame, cur,conn):
+def insert_data_to_db(df: pd.DataFrame, cur, conn):
     try:
         # Iterate over DataFrame rows as (index, Series) pairs
         for _, row in df.iterrows():
@@ -121,9 +120,9 @@ def insert_data_to_db(df:pd.DataFrame, cur,conn):
                 row['country_name'],
                 row['independence'],
                 row['un_members'],
-                row['start_of_week'],
+                row['startOfWeek'],
                 row['official_country_name'],
-                row['common_native_name'],
+                row['common_native_names'],
                 row['currency_code'],
                 row['currency_name'],
                 row['currency_symbol'],
@@ -137,21 +136,28 @@ def insert_data_to_db(df:pd.DataFrame, cur,conn):
             ))
 
         # Commit the transaction
-        cur.conn.commit()
+        conn.commit()
 
     except Exception as e:
         print(f"An error occurred: {e}")
+        conn.rollback()
 
 def main():
-  conn = psycopg2.connect(
-            "host=localhost dbname=world_countries user=postgres password=postgres")
-  cur = conn.cursor()
-  data = get_data(url=restcountries_url)
-  transformed_data = transformed_data(data)
-  create_db_table(conn,cur)
-  insert_data_to_db( transformed_data,conn,cur)
-  pass
+    conn = psycopg2.connect(
+        "host=localhost dbname=postgres user=postgres password=1118")
+    cur = conn.cursor()
+    data = get_data(url=restcountries_url)
+    
+    # Ensure data fetching was successful
+    if data != 'Error fetching data':
+        transformed_data = transform_data(data)
+        create_db_table(cur)
+        insert_data_to_db(transformed_data, cur, conn)
+    
+    # Close the cursor and connection
+    cur.close()
+    conn.close()
 
 
 if __name__ == '__main__':
-  main()
+    main()
