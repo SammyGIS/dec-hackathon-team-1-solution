@@ -13,48 +13,53 @@ import requests
 def get_data(url: str) -> json:
     request = requests.get(url)
     if request.status_code == 200:
+        print("data fectched successfully")
         return request.json()
     else:
         return 'Error fetching data'
 
 def transform_data(data: Any) -> pd.DataFrame:
-    countries = {
-        'country_name': [info['name'].get('common') for info in data],
-        'independence': [info.get('independent') for info in data],
-        'un_members': [info.get('unMember') for info in data],
-        'start_of_week': [info.get('startOfWeek') for info in data],
-        'official_country_name': [info['name'].get('official') for info in data],
-        'common_native_names': [info['name'].get('nativeName', {}).get('eng', {}).get('common') for info in data],
-        
-        'currency_code': [list(info.get('currencies', {}).keys())[0] if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
-        'currency_name': [list(info.get('currencies', {}).values())[0].get('name') if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
-        'currency_symbol': [list(info.get('currencies', {}).values())[0].get('symbol') if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
-        
-        'country_code': [info.get('cca3') for info in data],
-        'capital': [info.get('capital', [None])[0] for info in data],
-        'region': [info.get('region') for info in data],
-        'sub_region': [info.get('subregion') for info in data],
-        
-        'languages': [', '.join(info.get('languages', {}).values()) for info in data],
-        
-        'area': [info.get('area') for info in data],
-        'population': [info.get('population') for info in data],
-        
-        'continents': [info.get('continents', [None])[0] if info.get('continents') and len(info.get('continents')) > 0 else None for info in data],
-        
-        'longitude': [info.get('latlng', [None, None])[1] for info in data],
-        'latitude': [info.get('latlng', [None, None])[0] for info in data]
-    }
+    try:
+        countries = {
+            'country_name': [info['name'].get('common') for info in data],
+            'independence': [info.get('independent') for info in data],
+            'un_members': [info.get('unMember') for info in data],
+            'start_of_week': [info.get('startOfWeek') for info in data],
+            'official_country_name': [info['name'].get('official') for info in data],
+            'common_native_names': [info['name'].get('nativeName', {}).get('eng', {}).get('common') for info in data],
+            
+            'currency_code': [list(info.get('currencies', {}).keys())[0] if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
+            'currency_name': [list(info.get('currencies', {}).values())[0].get('name') if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
+            'currency_symbol': [list(info.get('currencies', {}).values())[0].get('symbol') if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
+            
+            'country_code': [info.get('cca3') for info in data],
+            'capital': [info.get('capital', [None])[0] for info in data],
+            'region': [info.get('region') for info in data],
+            'sub_region': [info.get('subregion') for info in data],
+            
+            'languages': [', '.join(info.get('languages', {}).values()) for info in data],
+            
+            'area': [info.get('area') for info in data],
+            'population': [info.get('population') for info in data],
+            
+            'continents': [info.get('continents', [None])[0] if info.get('continents') and len(info.get('continents')) > 0 else None for info in data],
+            
+            'longitude': [info.get('latlng', [None, None])[1] for info in data],
+            'latitude': [info.get('latlng', [None, None])[0] for info in data]
+        }
 
-    df_data = pd.DataFrame(countries)
-    
-    return df_data
+        df_data = pd.DataFrame(countries)
+        print('data transformed successfully')
+        return df_data
+    except Exception as e:
+        print('An error ocuured:',{e})
 
 
 def create_db(dbname):
     # Connect to the default 'postgres' database to create a new one
     conn = psycopg2.connect(
         "host=localhost dbname=postgres user=postgres password=1118")
+    conn.autocommit = True  # Ensure we are not in a transaction block
     try:
         cur = conn.cursor()
         # Check if the database already exists
@@ -64,9 +69,10 @@ def create_db(dbname):
             print(f"Database '{dbname}' created successfully.")
         else:
             print(f"Database '{dbname}' already exists.")
-
     except psycopg2.Error as e:
         print(f"An error occurred: {e}")
+    finally:
+        conn.close()  # Close the connection to the default database
 
 def create_table(cur):
     try:
@@ -154,18 +160,17 @@ def insert_data_to_db(df: pd.DataFrame, cur, conn):
 
 def main():
     restcountries_url = "https://restcountries.com/v3.1/all"
-    dbname = 'countries_db'
-    create_db(dbname=dbname)
-    conn = psycopg2.connect(
-        f"host=localhost dbname={dbname} user=postgres password=1118")
-    cur = conn.cursor()
     data = get_data(url=restcountries_url)
-    
+    dbname = 'countries_db' 
+
     if data != 'Error fetching data':
+        create_db(dbname=dbname)
+        conn = psycopg2.connect(f"host=localhost dbname={dbname} user=postgres password=1118")
+        cur = conn.cursor()
         transformed_data = transform_data(data)
-        print(transformed_data)
+        print(f'data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
         create_table(cur)
-        insert_data_to_db(transformed_data, cur,conn)
+        insert_data_to_db(transformed_data, cur, conn)
     
     cur.close()
     conn.close()
