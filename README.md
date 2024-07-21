@@ -26,6 +26,61 @@ This project involves extracting country data from a public REST API, transformi
 ## Architecture Diagram
 ![alt text](project_architecture.png)
 
+## Tools Used
+- Python
+- Metabase
+- Pgadmin
+- Postgres
+- Docker
+
+## Dependencies
+- requests
+- pandas
+- dotenv
+- psycopg2
+
+## Getting Started
+### Running without Docker
+1. Make sure you have Pgadmin and Postgres on your PC.
+
+2. Clone the repository.
+```bash
+git clone https://github.com/SammyGIS/dec-hackathon-team-1-solution.git
+```
+After cloning the repo, edit the `.env_file`, rename it to `.env`, and store your login credentials there.
+
+3. Install required dependencies.
+```bash
+pip install -r requirements.txt
+```
+
+4. Run the script in the CLI to extract, transform, and load the data into the database.
+```bash
+python main.py
+```
+
+5. You can then perform your analysis in Pgadmin. You can also connect it to any database system you have on your PC. All you need to do is add the host, port, password, and default database name in the `.env` file.
+
+### Running with Docker
+This is the best way to enjoy what we built. This way, all systems are connected seamlessly. If you're on Windows, you can install Docker from [Docker Hub](https://www.docker.com/products/docker-desktop/).
+
+1. Start Docker on your CLI.
+
+2. To address issues of conflicting ports, you can clear any running containers or change the port in the `docker-compose` file.
+
+3. Build the Docker images.
+```bash
+docker-compose build
+```
+
+4. Run the containers in detached mode.
+```bash
+docker-compose up -d
+```
+This automatically runs all the processes defined in the workflow. You can access your Pgadmin via `localhost:8080` and our Metabase visualization via `localhost:3000`.
+
+## Dashboard using Metabase
+
 ## Analytical Questions
 1. How many countries speak French?
 2. How many countries speak English?
@@ -42,21 +97,3 @@ This project involves extracting country data from a public REST API, transformi
 13. Top 5 countries with the largest area
 14. Top 5 countries with the lowest area
 
-## Visualization
-The results are visualized using a suitable tool such as Tableau, Power BI, or Plotly.
-
-## Project Structure
-
-
-## Getting Started
-1. Clone the repository.
-2. Install required dependencies.
-3. Run the scripts in the order of extraction, loading, analysis, and dashboard.
-
-## Dependencies
-- requests
-- pandas
-
-
-## License
-This project is licensed under the MIT License.
