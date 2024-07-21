@@ -24,7 +24,7 @@ This project involves extracting country data from a public REST API, transformi
 - Continents
 
 ## Architecture Diagram
-![alt text](project_architecture.png)
+![alt text](images/project_architecture.png)
 
 ## Tools Used
 - Python
