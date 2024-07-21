@@ -8,14 +8,10 @@ WORKDIR /app
 COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-RUN apt-get update && apt-get upgrade -y && apt-get install openjdk-11-jdk curl git -y \
-    && curl -O https://download.clojure.org/install/linux-install-1.11.1.1262.sh \
-    && chmod +x linux-install-1.11.1.1262.sh \
-    && ./linux-install-1.11.1.1262.sh
-
 # Copy the application code and environment variables
 COPY main.py ./main.py
-COPY .env ./.env 
+COPY .env ./
+
 
 # Run the application
 CMD ["python", "main.py"]
