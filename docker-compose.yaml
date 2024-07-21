@@ -20,7 +20,30 @@ services:
     ports:
       - "8080:80"
 
-  rightmove_scraper:
+  metabase:
+    image: metabase/metabase
+    container_name: metabase
+    restart: always
+    environment:
+      MB_DB_TYPE: postgres:13
+      MB_DB_DBNAME: metabase
+      MB_DB_PORT: 5432
+      MB_DB_USER: metabase
+      MB_DB_PASS: db_password
+      MB_DB_HOST: pgdatabase
+      MB_DB_FILE: /metabase-data/metabase.db
+    depends_on:
+      - pgdatabase
+    volumes:
+      - dataviz_data:/metabase-data
+    ports:
+      - "3000:3000"
+
+  python_script:
     build:
       context: .
       dockerfile: ./Dockerfile
+
+volumes:
+  db_data:
+  dataviz_data:
