@@ -8,7 +8,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=countries_db
     volumes:
-      - ./rest_countries:/var/lib/postgresql/data:rw
+      - ./rest_countries_db:/var/lib/postgresql/data:rw
     ports:
       - "5434:5432"
 
@@ -35,7 +35,7 @@ services:
     depends_on:
       - pgdatabase
     volumes:
-      - ./rest_countries:/metabase-data
+      - ./rest_countries_db:/metabase-data
     ports:
       - "3000:3000"
 
@@ -47,4 +47,4 @@ services:
       - pgdatabase
 
 volumes:
-  rest_countries:
+  rest_countries_db:
