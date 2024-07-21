@@ -10,6 +10,20 @@ FROM public.world_countries as wc
 WHERE
     wc.languages LIKE 'English%';
 -- 3. How many countries have more than 1 official language?
+WITH
+    table1 AS (
+        SELECT UNNEST (
+                STRING_TO_ARRAY (wc.languages, ',')
+            ) as language, COUNT(*) as count
+        FROM public.world_countries as wc
+        GROUP BY
+            language
+        HAVING
+            COUNT(*) > 1
+        ORDER BY count DESC
+    )
+SELECT COUNT(*) as total
+FROM table1;
 -- 4. How many countries' official currency is Euro?
 -- 5. How many countries are from Western Europe?
 -- 6. How many countries have not yet gained independence?
