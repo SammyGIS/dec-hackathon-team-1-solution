@@ -1,11 +1,16 @@
+# Use Python 3.9 as the base image
 FROM python:3.9
 
+# Set the working directory inside the container
 WORKDIR /app
 
-COPY  ./requirements.txt ./app/requirements.txt
-COPY ./main.py ./app/main.py
-COPY .env/ ./app/main.py
+# Copy the requirements file and install dependencies
+COPY requirements.txt ./requirements.txt
+RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
-RUN pip install --no-cache-dir --upgrade -r ./app/requirements.txt
+# Copy the application code and environment variables
+COPY main.py ./main.py
+COPY .env ./
 
-CMD ["echo", "main.py"]
+# Run the application
+CMD ["python", "main.py"]

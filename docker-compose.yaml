@@ -41,8 +41,8 @@ services:
 
   python_script:
     build:
-      context: .
-      dockerfile: ./Dockerfile
+      context: ./
+      dockerfile: Dockerfile
     depends_on:
       - pgdatabase
 
