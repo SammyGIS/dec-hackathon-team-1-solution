@@ -55,10 +55,10 @@ def transform_data(data: Any) -> pd.DataFrame:
         print('An error ocuured:',{e})
 
 
-def create_db(dbname):
+def create_db(dbname,port):
     # Connect to the default 'postgres' database to create a new one
     conn = psycopg2.connect(
-        "host=localhost dbname=postgres user=root password=root")
+        f"host={port} dbname=postgres user=root password=root")
     conn.autocommit = True  # Ensure we are not in a transaction block
     try:
         cur = conn.cursor()
@@ -162,10 +162,11 @@ def main():
     restcountries_url = "https://restcountries.com/v3.1/all"
     data = get_data(url=restcountries_url)
     dbname = 'countries_db' 
+    port = 5234
 
     if data != 'Error fetching data':
-        create_db(dbname=dbname)
-        conn = psycopg2.connect(f"host=localhost dbname={dbname} user=root password=root")
+        create_db(dbname=dbname,port=port)
+        conn = psycopg2.connect(f"host={port} dbname={dbname} user=root password=root")
         cur = conn.cursor()
         transformed_data = transform_data(data)
         print(f'data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
