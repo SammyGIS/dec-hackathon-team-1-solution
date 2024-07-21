@@ -9,9 +9,9 @@ COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy the application code and environment variables
-COPY main.py ./main.py
+COPY main.py ./etl_script.py
 COPY .env ./
 
 
 # Run the application
-CMD ["python", "main.py"]
+CMD ["python", "etl_script.py"]
