@@ -21,12 +21,11 @@ services:
       - "8080:80"
 
   metabase:
-    image: metabase/metabase
+    image: metabase/metabase:latest
     container_name: metabase
-    restart: always
     environment:
-      MB_DB_TYPE: postgres
-      MB_DB_DBNAME: metabase
+      MB_DB_TYPE: postgress
+      MB_DB_DBNAME: countries_db
       MB_DB_PORT: 5432
       MB_DB_USER: root
       MB_DB_PASS: root
