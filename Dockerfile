@@ -4,8 +4,8 @@ WORKDIR /app
 
 COPY  ./requirements.txt ./app/requirements.txt
 COPY main.py ./app/main.py
-COPY .env/ .env
+COPY .env/ ./app/main.py
 
-RUN pip install --no-cache-dir --upgrade -r /code/requirements.txt
+RUN pip install --no-cache-dir --upgrade -r ./app/requirements.txt
 
 CMD ["echo", "main.py"]
