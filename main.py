@@ -58,7 +58,7 @@ def transform_data(data: Any) -> pd.DataFrame:
 def create_db(dbname):
     # Connect to the default 'postgres' database to create a new one
     conn = psycopg2.connect(
-        "host=localhost dbname=postgres user=postgres password=1118")
+        "host=localhost dbname=postgres user=root password=root")
     conn.autocommit = True  # Ensure we are not in a transaction block
     try:
         cur = conn.cursor()
@@ -165,7 +165,7 @@ def main():
 
     if data != 'Error fetching data':
         create_db(dbname=dbname)
-        conn = psycopg2.connect(f"host=localhost dbname={dbname} user=postgres password=1118")
+        conn = psycopg2.connect(f"host=localhost dbname={dbname} user=root password=root")
         cur = conn.cursor()
         transformed_data = transform_data(data)
         print(f'data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
