@@ -1,4 +1,4 @@
-version: '3'
+version: '3.8'
 
 services:
   pgdatabase:
@@ -6,11 +6,11 @@ services:
     environment:
       - POSTGRES_USER=root
       - POSTGRES_PASSWORD=root
-      - POSTGRES_DB=countries_taxi
+      - POSTGRES_DB=countries_db
     volumes:
       - ./rest_countries:/var/lib/postgresql/data:rw
     ports:
-      - "5431:5432"
+      - "5434:5434"
 
   pgadmin:
     image: dpage/pgadmin4
@@ -27,15 +27,15 @@ services:
     environment:
       MB_DB_TYPE: postgres:13
       MB_DB_DBNAME: metabase
-      MB_DB_PORT: 5432
-      MB_DB_USER: metabase
-      MB_DB_PASS: db_password
+      MB_DB_PORT: 5434
+      MB_DB_USER: root
+      MB_DB_PASS: root
       MB_DB_HOST: pgdatabase
       MB_DB_FILE: /metabase-data/metabase.db
     depends_on:
       - pgdatabase
     volumes:
-      - dataviz_data:/metabase-data
+      - ./rest_countries:/metabase-data
     ports:
       - "3000:3000"
 
@@ -43,7 +43,8 @@ services:
     build:
       context: .
       dockerfile: ./Dockerfile
+    depends_on:
+      - pgdatabase
 
 volumes:
-  db_data:
-  dataviz_data:
+  rest_countries:
