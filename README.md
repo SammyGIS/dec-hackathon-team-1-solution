@@ -83,9 +83,9 @@ This automatically runs all the processes defined in the workflow. You can acces
 
 4. Connecting pgAdmin to Your PostgreSQL Database
     **Run the Server**
-        - Start the server by running `localhost:8080`.
+        - Start the server by running `localhost:8080` in your browser.
     **Sign in to pgAdmin**
-        - Open pgAdmin and sign in with your credentials.
+        - Open pgAdmin and sign in with your credentials; check the docker compose file.
     **Create a New Server**
         - Right-click on `Servers`.
         - Click on `Create` and then `Server`.
