@@ -82,30 +82,30 @@ This automatically runs all the processes defined in the workflow. You can acces
 
 
 4. Connecting pgAdmin to Your PostgreSQL Database
-    **Run the Server**
+    1. **Run the Server**
         - Start the server by running `localhost:8080` in your browser.
-    **Sign in to pgAdmin**
+    2. **Sign in to pgAdmin**
         - Open pgAdmin and sign in with your credentials; check the docker compose file.
-    **Create a New Server**
+    3. **Create a New Server**
         - Right-click on `Servers`.
         - Click on `Create` and then `Server`.
-    **Enter Server Details**
+    4. **Enter Server Details**
         - Enter the server name (e.g., `pgdatabase`).
-    **Configure Connection**
+    5. **Configure Connection**
         - Go to the `Connection` tab.
         - In the `Host` section, enter `pgdatabase` (as defined in your Docker Compose file).
         - Enter your `Username`, `Password`, `Port`, and the default `Database name`.
-    **Finalize the Connection**
+    6. **Finalize the Connection**
         - Click `Save` to connect pgAdmin to your PostgreSQL database.
-    **Access the Database**
+    7. **Access the Database**
         - Once connected, you will see the `countries_db` database already created.
         - Open the `countries_db` database.
-    **Navigate to Schema**
+    8. **Navigate to Schema**
         - Go to `Schemas`.
         - Open the `public` schema.
-    **Access Tables**
+    10. **Access Tables**
         - Open `Tables` to see your table.
-    **Open Query Tool**
+    11. **Open Query Tool**
         - Right-click on the table and select `Query Tool`.
         - Start writing your SQL queries to solve the analysis problem.
 
