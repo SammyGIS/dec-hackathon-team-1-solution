@@ -65,19 +65,54 @@ python main.py
 This is the best way to enjoy what we built. This way, all systems are connected seamlessly. If you're on Windows, you can install Docker from [Docker Hub](https://www.docker.com/products/docker-desktop/).
 
 1. Start Docker on your CLI.
-
-2. To address issues of conflicting ports, you can clear any running containers or change the port in the `docker-compose` file.
-
-3. Build the Docker images.
+2. Clone the repository.
+```bash
+git clone https://github.com/SammyGIS/dec-hackathon-team-1-solution.git
+```
+3. To address issues of conflicting ports, you can clear any running containers or change the port in the `docker-compose.yaml` file.
+4. open your cli, chnage to the directory you cloned in step 2, build the Docker images uisng the command.
 ```bash
 docker-compose build
 ```
-
 4. Run the containers in detached mode.
 ```bash
 docker-compose up -d
 ```
-This automatically runs all the processes defined in the workflow. You can access your Pgadmin via `localhost:8080` and our Metabase visualization via `localhost:3000`.
+This automatically runs all the processes defined in the workflow. You can access your Pgadmin via `localhost:8080` to running some sql codes or connect your pgdatavase to metabase and run metabase visualization app via `localhost:3000`.
+
+
+4. Connecting pgAdmin to Your PostgreSQL Database
+    **Run the Server**
+        - Start the server by running `localhost:8080`.
+    **Sign in to pgAdmin**
+        - Open pgAdmin and sign in with your credentials.
+    **Create a New Server**
+        - Right-click on `Servers`.
+        - Click on `Create` and then `Server`.
+    **Enter Server Details**
+        - Enter the server name (e.g., `pgdatabase`).
+    **Configure Connection**
+        - Go to the `Connection` tab.
+        - In the `Host` section, enter `pgdatabase` (as defined in your Docker Compose file).
+        - Enter your `Username`, `Password`, `Port`, and the default `Database name`.
+    **Finalize the Connection**
+        - Click `Save` to connect pgAdmin to your PostgreSQL database.
+    **Access the Database**
+        - Once connected, you will see the `countries_db` database already created.
+        - Open the `countries_db` database.
+    **Navigate to Schema**
+        - Go to `Schemas`.
+        - Open the `public` schema.
+    **Access Tables**
+        - Open `Tables` to see your table.
+    **Open Query Tool**
+        - Right-click on the table and select `Query Tool`.
+        - Start writing your SQL queries to solve the analysis problem.
+
+5. Whenever your are done with closed it using the command
+```bash
+docker-compose down
+```
 
 ## Dashboard using Metabase
 
