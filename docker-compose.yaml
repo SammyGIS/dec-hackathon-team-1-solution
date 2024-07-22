@@ -49,6 +49,6 @@ services:
       - pgdatabase
 
 volumes:
-  rest_countries_db:
+  docker_mapped_output:
 
 
