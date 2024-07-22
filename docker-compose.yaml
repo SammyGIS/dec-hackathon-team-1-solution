@@ -6,7 +6,7 @@ services:
     container_name: metabase
     hostname: metabase
     volumes:
-      - ./rest_countries_db:/dev/random:ro
+      - ./docker_mapped_output/metabsedb:/dev/random:ro
     ports:
       - 3000:3000
     environment:
@@ -29,7 +29,7 @@ services:
       - POSTGRES_PASSWORD=root
       - POSTGRES_DB=countries_db
     volumes:
-      - ./rest_countries_db:/var/lib/postgresql/data:rw
+      - ./docker_mapped_output/rest_countries_db:/var/lib/postgresql/data:rw
     ports:
       - "5434:5432"
 
