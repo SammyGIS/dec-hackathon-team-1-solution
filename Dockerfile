@@ -9,7 +9,7 @@ COPY requirements.txt ./requirements.txt
 RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy the application code and environment variables
-COPY main.py ./etl_script.py
+COPY etl_script.py ./etl_script.py
 COPY .env ./
 
 
