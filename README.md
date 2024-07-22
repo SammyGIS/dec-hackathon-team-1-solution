@@ -56,7 +56,7 @@ pip install -r requirements.txt
 
 4. Run the script in the CLI to extract, transform, and load the data into the database.
 ```bash
-python main.py
+python etl_script.py
 ```
 
 5. You can then perform your analysis in Pgadmin. You can also connect it to any database system you have on your PC. All you need to do is add the host, port, password, and default database name in the `.env` file.
@@ -88,9 +88,9 @@ This automatically runs all the processes defined in the workflow. You can acces
         - Open pgAdmin and sign in with your credentials; check the docker compose file.
     3. **Create a New Server**
         - Right-click on `Servers`.
-        - Click on `Create` and then `Server`.
+        - Click on `Register` and then `Server`.
     4. **Enter Server Details**
-        - Enter the server name (e.g., `pgdatabase`).
+        - Enter the server name (e.g., `PGDATABASE`).
     5. **Configure Connection**
         - Go to the `Connection` tab.
         - In the `Host` section, enter `pgdatabase` (as defined in your Docker Compose file).
