@@ -118,17 +118,31 @@ docker-compose down
 
 ## Analytical Questions
 1. How many countries speak French?
+![alt text](images/Question1.png)
 2. How many countries speak English?
+![alt text](images/Question2.png)
 3. How many countries have more than 1 official language?
+![alt text](images/Question3.png)
 4. How many countries' official currency is Euro?
+![alt text](images/Question4.png)
 5. How many countries are from Western Europe?
+![alt text](images/Question5.png)
 6. How many countries have not yet gained independence?
+![alt text](images/Question6.png)
 7. How many distinct continents and how many countries from each?
+![alt text](images/Question7.png)
 8. How many countries' start of the week is not Monday?
+![alt text](images/Question8.png)
 9. How many countries are not United Nation members?
+![alt text](images/Question9.png)
 10. How many countries are United Nation members?
+![alt text](images/Question10.png)
 11. Least 2 countries with the lowest population for each continent
+![alt text](images/Question11.png)
 12. Top 2 countries with the largest area for each continent
+![alt text](images/Question12.png)
 13. Top 5 countries with the largest area
+![alt text](images/Question13.png)
 14. Top 5 countries with the lowest area
+![alt text](images/Question14.png)
 
