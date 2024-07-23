@@ -75,12 +75,12 @@ def create_db(host,default_db,user,password,port):
     try:
         cur = conn.cursor()
         # Check if the database already exists
-        cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{dbname}'")
+        cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{default_db}'")
         if cur.fetchone() is None:
-            cur.execute(f"CREATE DATABASE {dbname}")
-            print(f"Database '{dbname}' created successfully.")
+            cur.execute(f"CREATE DATABASE {default_db}")
+            print(f"Database '{default_db}' created successfully.")
         else:
-            print(f"Database '{dbname}' already exists.")
+            print(f"Database '{default_db}' already exists.")
     except psycopg2.Error as e:
         print(f"An error occurred: {e}")
     finally:
