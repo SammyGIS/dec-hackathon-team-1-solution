@@ -10,7 +10,7 @@ RUN pip install --no-cache-dir --upgrade -r requirements.txt
 
 # Copy the application code and environment variables
 COPY etl_script.py ./etl_script.py
-COPY .env ./
+COPY .env ./.env
 
 
 # Run the application
