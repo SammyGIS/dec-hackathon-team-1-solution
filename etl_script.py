@@ -3,11 +3,21 @@
 # Date:
 #************************************************************************
 import json
+import os
 from typing import Any
 
 import pandas as pd
 import psycopg2
 import requests
+from dotenv import load_dotenv
+
+load_dotenv()
+
+PORT = os.getenv("PORT")
+DBNAME = os.getenv("DBNAE")
+USER = os.getenv("USER")
+HOST = os.getenv("HOST")
+DEFAULTDB = os.getenv("DEFAULDB")
 
 
 def get_data(url: str) -> json:
