@@ -115,6 +115,14 @@ docker-compose down
 ```
 
 ## Dashboard using Metabase
+### image Analytics
+![alt text](images/dashboard_1.png)
+
+### image Query
+![alt text](images/dashboard_2.png)
+
+### image Map Viz
+![alt text](images/dashboard_3.png)
 
 ## Analytical Questions
 1. How many countries speak French?
