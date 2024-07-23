@@ -1,3 +1,3 @@
 /docker_mapped_output/rest_countries_db
 /docker_mapped_output/metabasedb
-/.env
+.env
