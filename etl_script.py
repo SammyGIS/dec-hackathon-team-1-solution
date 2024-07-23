@@ -14,11 +14,13 @@ from dotenv import load_dotenv
 load_dotenv()
 
 PORT = os.getenv("PORT")
-DBNAME = os.getenv("DBNAE")
+DBNAME = os.getenv("DBNAME")
 USER = os.getenv("USER")
 HOST = os.getenv("HOST")
 DEFAULTDB = os.getenv("DEFAULDB")
+PASSWORD=os.getenv("PASSWORD")
 
+restcountries_url = "https://restcountries.com/v3.1/all"
 
 def get_data(url: str) -> json:
     request = requests.get(url)
@@ -65,10 +67,10 @@ def transform_data(data: Any) -> pd.DataFrame:
         print('An error ocuured:',{e})
 
 
-def create_db(dbname,host,port):
+def create_db(host,default_db,user,password,port):
     # Connect to the default 'postgres' database to create a new one
     conn = psycopg2.connect(
-        f"host={host} dbname=postgres user=root password=root port={port}")
+        f"host={host} dbname={default_db} user={user} password={password} port={port}")
     conn.autocommit = True  # Ensure we are not in a transaction block
     try:
         cur = conn.cursor()
@@ -169,15 +171,11 @@ def insert_data_to_db(df: pd.DataFrame, cur, conn):
         print(f"An error occurred while inserting data: {e}")
 
 def main():
-    restcountries_url = "https://restcountries.com/v3.1/all"
     data = get_data(url=restcountries_url)
-    dbname = 'countries_db' 
-    host = 'pgdatabase'
-    port = 5432
 
     if data != 'Error fetching data':
-        create_db(dbname=dbname,host=host,port=port)
-        conn = psycopg2.connect(f"host={host} dbname={dbname} user=root password=root port={port}")
+        create_db(HOST,DEFAULTDB,USER,PASSWORD,PORT)
+        conn = psycopg2.connect(f"host={HOST} dbname={DBNAME} user={USER} password={PASSWORD }port={PORT}")
         cur = conn.cursor()
         transformed_data = transform_data(data)
         print(f'data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
