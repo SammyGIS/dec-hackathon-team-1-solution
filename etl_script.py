@@ -17,9 +17,10 @@ PORT = os.getenv("PORT")
 DBNAME = os.getenv("DBNAME")
 USER = os.getenv("USER")
 HOST = os.getenv("HOST")
-DEFAULTDB = os.getenv("DEFAULDB")
+DEFAULTDB = os.getenv("DEFAULTDB")
 PASSWORD=os.getenv("PASSWORD")
 
+print(DBNAME)
 restcountries_url = "https://restcountries.com/v3.1/all"
 
 def get_data(url: str) -> json:
@@ -174,8 +175,9 @@ def main():
     data = get_data(url=restcountries_url)
 
     if data != 'Error fetching data':
-        create_db(HOST,DEFAULTDB,USER,PASSWORD,PORT)
-        conn = psycopg2.connect(f"host={HOST} dbname={DBNAME} user={USER} password={PASSWORD }port={PORT}")
+        create_db(host=HOST,default_db=DEFAULTDB,
+                  user=USER,password=PASSWORD,port=PORT)
+        conn = psycopg2.connect(f"host={HOST} dbname={DBNAME} user={USER} password={PASSWORD} port={PORT}")
         cur = conn.cursor()
         transformed_data = transform_data(data)
         print(f'data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
