@@ -16,7 +16,7 @@ Objectives
 Extracted Fields
 ----------
 - **Country Name:** The commonly used name of the country.
-- **Independence:** The date the country gained independence.
+- **Independence:** IF the country is independence or not.
 - **United Nation Member:** Indicates if the country is a member of the United Nations.
 - **Start of Week:** The day the week officially starts in the country.
 - **Official Country Name:** The formal or official name of the country.
@@ -24,7 +24,7 @@ Extracted Fields
 - **Currency Code:** The ISO code for the country's currency.
 - **Currency Name:** The name of the country's currency.
 - **Currency Symbol:** The symbol used to represent the country's currency.
-- **Country Code (IDD):** The international dialing code for the country.
+- **Country Code:** The international 3 Letter Country code.
 - **Capital:** The capital city of the country.
 - **Region:** The geographical region where the country is located.
 - **Sub Region:** A more specific geographical area within the region.
