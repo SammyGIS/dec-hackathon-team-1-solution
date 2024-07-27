@@ -1,7 +1,3 @@
-#************************************************************************
-# Authors:
-# Date:
-#************************************************************************
 import json
 import os
 from typing import Any
@@ -11,27 +7,47 @@ import psycopg2
 import requests
 from dotenv import load_dotenv
 
+# Load environment variables from .env file
 load_dotenv()
 
+# Retrieve database credentials from environment variables
 PORT = os.getenv("PORT")
 DBNAME = os.getenv("DBNAME")
 USER = os.getenv("USER")
 HOST = os.getenv("HOST")
 DEFAULTDB = os.getenv("DEFAULTDB")
-PASSWORD=os.getenv("PASSWORD")
+PASSWORD = os.getenv("PASSWORD")
 
-print(DBNAME)
+# URL to fetch country data
 restcountries_url = "https://restcountries.com/v3.1/all"
 
 def get_data(url: str) -> json:
+    """
+    Fetch data from a given URL.
+
+    Args:
+    url (str): The URL to fetch data from.
+
+    Returns:
+    json: The fetched data in JSON format if successful, else an error message.
+    """
     request = requests.get(url)
     if request.status_code == 200:
-        print("data fectched successfully")
+        print("Data fetched successfully")
         return request.json()
     else:
         return 'Error fetching data'
 
 def transform_data(data: Any) -> pd.DataFrame:
+    """
+    Transform the fetched JSON data into a pandas DataFrame.
+
+    Args:
+    data (Any): The JSON data to transform.
+
+    Returns:
+    pd.DataFrame: The transformed data in DataFrame format.
+    """
     try:
         countries = {
             'country_name': [info['name'].get('common') for info in data],
@@ -40,35 +56,40 @@ def transform_data(data: Any) -> pd.DataFrame:
             'start_of_week': [info.get('startOfWeek') for info in data],
             'official_country_name': [info['name'].get('official') for info in data],
             'common_native_names': [info['name'].get('nativeName', {}).get('eng', {}).get('common') for info in data],
-            
             'currency_code': [list(info.get('currencies', {}).keys())[0] if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
             'currency_name': [list(info.get('currencies', {}).values())[0].get('name') if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
             'currency_symbol': [list(info.get('currencies', {}).values())[0].get('symbol') if info.get('currencies') and len(info.get('currencies')) > 0 else None for info in data],
-            
             'country_code': [info.get('cca3') for info in data],
             'capital': [info.get('capital', [None])[0] for info in data],
             'region': [info.get('region') for info in data],
             'sub_region': [info.get('subregion') for info in data],
-            
             'languages': [', '.join(info.get('languages', {}).values()) for info in data],
-            
             'area': [info.get('area') for info in data],
             'population': [info.get('population') for info in data],
-            
             'continents': [info.get('continents', [None])[0] if info.get('continents') and len(info.get('continents')) > 0 else None for info in data],
-            
             'longitude': [info.get('latlng', [None, None])[1] for info in data],
             'latitude': [info.get('latlng', [None, None])[0] for info in data]
         }
 
         df_data = pd.DataFrame(countries)
-        print('data transformed successfully')
+        print('Data transformed successfully')
         return df_data
     except Exception as e:
-        print('An error ocuured:',{e})
+        print('An error occurred:', {e})
 
+def create_db(host: str, default_db: str, user: str,
+               password: str, port: str, dbname: str):
+    """
+    Create a database if it does not already exist.
 
-def create_db(host,default_db,user,password,port,dbname):
+    Args:
+    host (str): The database host.
+    default_db (str): The default database to connect to.
+    user (str): The database user.
+    password (str): The database password.
+    port (str): The database port.
+    dbname (str): The name of the database to create.
+    """
     # Connect to the default 'postgres' database to create a new one
     conn = psycopg2.connect(
         f"host={host} dbname={default_db} user={user} password={password} port={port}")
@@ -88,6 +109,12 @@ def create_db(host,default_db,user,password,port,dbname):
         conn.close()  # Close the connection to the default database
 
 def create_table(cur):
+    """
+    Create the table for storing country data.
+
+    Args:
+    cur: The database cursor.
+    """
     try:
         cur.execute("""
             DROP TABLE IF EXISTS world_countries;
@@ -118,6 +145,14 @@ def create_table(cur):
         print(f"An error occurred while creating the table: {e}")
 
 def insert_data_to_db(df: pd.DataFrame, cur, conn):
+    """
+    Insert data from the DataFrame into the database.
+
+    Args:
+    df (pd.DataFrame): The DataFrame containing the data to insert.
+    cur: The database cursor.
+    conn: The database connection.
+    """
     try:
         for _, row in df.iterrows():
             cur.execute("""
@@ -165,27 +200,28 @@ def insert_data_to_db(df: pd.DataFrame, cur, conn):
             ))
 
         conn.commit()
-
         print("Data inserted successfully.")
-
     except Exception as e:
         print(f"An error occurred while inserting data: {e}")
 
 def main():
+    """
+    Main function to orchestrate the data fetching, transformation,
+    database creation, table creation, and data insertion.
+    """
     data = get_data(url=restcountries_url)
 
     if data != 'Error fetching data':
-        create_db(host=HOST,default_db=DEFAULTDB,
-                  user=USER,password=PASSWORD,port=PORT,dbname=DBNAME)
+        create_db(host=HOST, default_db=DEFAULTDB,
+                  user=USER, password=PASSWORD, port=PORT, dbname=DBNAME)
         conn = psycopg2.connect(f"host={HOST} dbname={DBNAME} user={USER} password={PASSWORD} port={PORT}")
         cur = conn.cursor()
         transformed_data = transform_data(data)
-        print(f'data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
+        print(f'Data has {transformed_data.shape[0]} rows and {transformed_data.shape[1]} columns')
         create_table(cur)
         insert_data_to_db(transformed_data, cur, conn)
-    
-    cur.close()
-    conn.close()
+        cur.close()
+        conn.close()
 
 if __name__ == '__main__':
     main()
