@@ -214,6 +214,7 @@ def main():
     if data != 'Error fetching data':
         create_db(host=HOST, default_db=DEFAULTDB,
                   user=USER, password=PASSWORD, port=PORT, dbname=DBNAME)
+        
         conn = psycopg2.connect(f"host={HOST} dbname={DBNAME} user={USER} password={PASSWORD} port={PORT}")
         cur = conn.cursor()
         transformed_data = transform_data(data)
