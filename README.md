@@ -6,13 +6,12 @@ This project focuses on leveraging country data to provide valuable insights for
 * Provide Recommendations: The processed data will be utilized by travel agencies to offer personalized travel recommendations to customers.
 * Enhance Decision-Making: Generate actionable insights that can guide travel planning and customer engagement strategies.
 * Streamline Data Management: Employ a robust architecture that ensures data consistency and ease of access for analysis and visualization.
+* Design a Versatile Workflow: Create a streamlined workflow that can be seamlessly executed both within Docker containers and in a local environment.
 
 ## Data Source
 - REST API: [REST Countries](https://restcountries.com/v3.1/all)
 
 ## Extracted Fields
-## Data Dictionary
-
 - **Country Name:** The commonly used name of the country.
 - **Independence:** The date the country gained independence.
 - **United Nation Member:** Indicates if the country is a member of the United Nations.
@@ -65,11 +64,9 @@ The only aspect of the data that might change is the population, which is update
 - Facilitates tasks such as querying, data modeling, and database monitoring.
 
 **Docker for Managing Services:**
-- Docker is used to containerize all services listed above, ensuring consistency and isolation.
-- Simplifies deployment and scaling by running everything inside Docker containers.
-- Ensures seamless integration and orchestration of Python scripts, Metabase, Postgres, and pgAdmin.
-
-By leveraging these technologies, the workflow is streamlined, efficient, and scalable, allowing for robust data processing, management, and visualization within a consistent and isolated environment.
+- Containerization: Docker puts each service (like Python scripts, Metabase, Postgres, pgAdmin) into separate boxes. For example, if you run a Python script, Docker ensures it runs the same way on any computer.
+- Consistency: Docker ensures that everything works the same on different machines. For instance, if your script needs specific tools, Docker makes sure everyone has the same tools.
+- Integration: Docker helps all services work together smoothly. If you need your script to get data from Postgres and visualize it in Metabase, Docker keeps everything connected.
 
 
 ## Python Dependencies
