@@ -68,7 +68,7 @@ def transform_data(data: Any) -> pd.DataFrame:
         print('An error ocuured:',{e})
 
 
-def create_db(host,default_db,user,password,port):
+def create_db(host,default_db,user,password,port,dbname):
     # Connect to the default 'postgres' database to create a new one
     conn = psycopg2.connect(
         f"host={host} dbname={default_db} user={user} password={password} port={port}")
@@ -76,12 +76,12 @@ def create_db(host,default_db,user,password,port):
     try:
         cur = conn.cursor()
         # Check if the database already exists
-        cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{default_db}'")
+        cur.execute(f"SELECT 1 FROM pg_database WHERE datname = '{dbname}'")
         if cur.fetchone() is None:
-            cur.execute(f"CREATE DATABASE {default_db}")
-            print(f"Database '{default_db}' created successfully.")
+            cur.execute(f"CREATE DATABASE {dbname}")
+            print(f"Database '{dbname}' created successfully.")
         else:
-            print(f"Database '{default_db}' already exists.")
+            print(f"Database '{dbname}' already exists.")
     except psycopg2.Error as e:
         print(f"An error occurred: {e}")
     finally:
@@ -176,7 +176,7 @@ def main():
 
     if data != 'Error fetching data':
         create_db(host=HOST,default_db=DEFAULTDB,
-                  user=USER,password=PASSWORD,port=PORT)
+                  user=USER,password=PASSWORD,port=PORT,dbname=DBNAME)
         conn = psycopg2.connect(f"host={HOST} dbname={DBNAME} user={USER} password={PASSWORD} port={PORT}")
         cur = conn.cursor()
         transformed_data = transform_data(data)
