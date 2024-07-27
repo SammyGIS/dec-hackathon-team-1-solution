@@ -1,8 +1,10 @@
-## Overview
-Project Overview
-This project focuses on leveraging country data to provide valuable insights for travel agencies. The workflow involves extracting data from a public REST API, transforming and loading it into a database, and then analyzing it to generate actionable insights. These insights will be used to enhance travel recommendations for customers.
+Overview
+----------
+In this project, you will assume the role of a data engineer for a travel recommendation agency. Your task is to build a simple and robust data pipeline that extracts country-related information from a public REST API, transforms and cleans this data, and then stores it in a database. You will use tools and programming languages to ensure the data is properly formatted and inserted into the database, such as PostgreSQL. Once the data is stored, you will connect the database to a data visualization tool like Metabase to create interactive charts and graphs. Additionally, you will participate in analyzing the data using SQL queries to extract meaningful insights and trends. These analyses, combined with the visualizations, will help generate actionable insights to enhance travel recommendations for customers. The project focuses on building a scalable and reproducible system, ensuring that the process can handle growing data and be easily replicated. This end-to-end pipeline will provide valuable experience in data engineering, processing, visualization, and analysis.
 
-### Objectives
+
+Objectives
+----------
 * Provide Recommendations: The processed data will be utilized by travel agencies to offer personalized travel recommendations to customers.
 * Enhance Decision-Making: Generate actionable insights that can guide travel planning and customer engagement strategies.
 * Streamline Data Management: Employ a robust architecture that ensures data consistency and ease of access for analysis and visualization.
@@ -11,7 +13,8 @@ This project focuses on leveraging country data to provide valuable insights for
 ## Data Source
 - REST API: [REST Countries](https://restcountries.com/v3.1/all)
 
-## Extracted Fields
+Extracted Fields
+----------
 - **Country Name:** The commonly used name of the country.
 - **Independence:** The date the country gained independence.
 - **United Nation Member:** Indicates if the country is a member of the United Nations.
@@ -35,7 +38,8 @@ This project focuses on leveraging country data to provide valuable insights for
 ## Architecture Diagram
 ![alt text](images/project_architecture.png)
 
-## Why This Architecture
+Why This Architecture
+----------
 We chose this architecture for its simplicity and efficiency. Given the nature of the data, which is small and rarely changes, extensive automation and complex setups would be unnecessary and resource-intensive. Here's why we opted for this approach:
 
 - **Simplicity:** The data is small and can be handled easily without the need for batch loading.
@@ -76,7 +80,8 @@ The only aspect of the data that might change is the population, which is update
 - psycopg2
 
 ## Getting Started
-### Running without Docker
+Running without Docker
+----------
 1. Make sure you have Pgadmin and Postgres on your PC.
 
 2. Clone the repository.
@@ -97,7 +102,8 @@ python etl_script.py
 
 5. You can then perform your analysis in Pgadmin. You can also connect it to any database system you have on your PC. All you need to do is add the host, port, password, and default database name in the `.env` file.
 
-### Running with Docker
+Running with Docker
+----------
 This is the best way to enjoy what we built. This way, all systems are connected seamlessly. If you're on Windows, you can install Docker from [Docker Hub](https://www.docker.com/products/docker-desktop/).
 
 1. Start Docker on your CLI.
@@ -150,7 +156,8 @@ This automatically runs all the processes defined in the workflow. You can acces
 docker-compose down
 ```
 
-## Dashboard using Metabase
+Dashboard using Metabase
+----------
 ### image Analytics
 ![alt text](images/dashboard_1.png)
 
@@ -160,7 +167,8 @@ docker-compose down
 ### image Map Viz
 ![alt text](images/dashboard_3.png)
 
-## Analytical Questions
+Analytical Questions
+----------
 1. How many countries speak French?
 ![alt text](images/Question1.png)
 2. How many countries speak English?
