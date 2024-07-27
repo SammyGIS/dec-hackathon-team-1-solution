@@ -1,39 +1,78 @@
-## Project Overview
-This project involves extracting country data from a public REST API, transforming the data, loading it into a database, and analyzing it to gain insights. The data is used to answer specific analytical questions and visualize the results in a dashboard.
+## Overview
+Project Overview
+This project focuses on leveraging country data to provide valuable insights for travel agencies. The workflow involves extracting data from a public REST API, transforming and loading it into a database, and then analyzing it to generate actionable insights. These insights will be used to enhance travel recommendations for customers.
+
+### Objectives
+* Provide Recommendations: The processed data will be utilized by travel agencies to offer personalized travel recommendations to customers.
+* Enhance Decision-Making: Generate actionable insights that can guide travel planning and customer engagement strategies.
+* Streamline Data Management: Employ a robust architecture that ensures data consistency and ease of access for analysis and visualization.
 
 ## Data Source
 - REST API: [REST Countries](https://restcountries.com/v3.1/all)
 
 ## Extracted Fields
-- Country Name
-- Independence
-- United Nation Member
-- Start of Week
-- Official Country Name
-- Common Native Name
-- Currency Code
-- Currency Name
-- Currency Symbol
-- Country Code (IDD)
-- Capital
-- Region
-- Sub Region
-- Languages
-- Area
-- Population
-- Continents
+## Data Dictionary
+
+- **Country Name:** The commonly used name of the country.
+- **Independence:** The date the country gained independence.
+- **United Nation Member:** Indicates if the country is a member of the United Nations.
+- **Start of Week:** The day the week officially starts in the country.
+- **Official Country Name:** The formal or official name of the country.
+- **Common Native Name:** The name of the country in its native language.
+- **Currency Code:** The ISO code for the country's currency.
+- **Currency Name:** The name of the country's currency.
+- **Currency Symbol:** The symbol used to represent the country's currency.
+- **Country Code (IDD):** The international dialing code for the country.
+- **Capital:** The capital city of the country.
+- **Region:** The geographical region where the country is located.
+- **Sub Region:** A more specific geographical area within the region.
+- **Languages:** The languages spoken in the country.
+- **Area:** The total land area of the country in square kilometers.
+- **Population:** The estimated population of the country.
+- **Continents:** The continent or continents on which the country is located.
+- **Latitude:** The latitude coordinate of the country.
+- **Longitude:** The longitude coordinate of the country.
 
 ## Architecture Diagram
 ![alt text](images/project_architecture.png)
 
-## Tools Used
-- Python
-- Metabase
-- Pgadmin
-- Postgres
-- Docker
+## Why This Architecture
+We chose this architecture for its simplicity and efficiency. Given the nature of the data, which is small and rarely changes, extensive automation and complex setups would be unnecessary and resource-intensive. Here's why we opted for this approach:
 
-## Dependencies
+- **Simplicity:** The data is small and can be handled easily without the need for batch loading.
+- **Efficiency:** Automation is not required as the data rarely changes, saving time and resources.
+- **Speed:** The data can be extracted and loaded into the database within a minute.
+- **Minimal Setup:** We decided against using a staging database or data lake due to the manageable size of the data.
+The only aspect of the data that might change is the population, which is updated every ten years through a census conducted across different counties. Most of the population data are estimates rather than actual counts. This streamlined approach ensures quick and effective data processing while avoiding unnecessary complexity.
+
+## Tools Used
+**Python for ETL:**
+- Python serves as the primary language for Extract, Transform, Load (ETL) processes.
+- Utilizes powerful libraries such as Pandas, requests, and pyscopg2 for data manipulation and database interaction.
+- Automates the extraction of data from source and tansfrom it into usable formats, then load  the data into databases.
+
+**Metabase for Data Visualization:**
+- Metabase is used for creating interactive and insightful data visualizations.
+- Connects seamlessly to the Postgres database to visualize data in real-time.
+
+**Postgres for Database Management:**
+- PostgreSQL (Postgres) is the database system for storing and managing data.
+- Known for its robustness, scalability, and support for complex queries.
+
+**pgAdmin for Database Management:**
+- pgAdmin is the tool for managing the Postgres database.
+- Offers a user-friendly interface for database administration tasks.
+- Facilitates tasks such as querying, data modeling, and database monitoring.
+
+**Docker for Managing Services:**
+- Docker is used to containerize all services listed above, ensuring consistency and isolation.
+- Simplifies deployment and scaling by running everything inside Docker containers.
+- Ensures seamless integration and orchestration of Python scripts, Metabase, Postgres, and pgAdmin.
+
+By leveraging these technologies, the workflow is streamlined, efficient, and scalable, allowing for robust data processing, management, and visualization within a consistent and isolated environment.
+
+
+## Python Dependencies
 - requests
 - pandas
 - dotenv
